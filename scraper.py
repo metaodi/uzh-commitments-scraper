@@ -12,14 +12,14 @@ c.execute('DROP TABLE IF EXISTS data')
 c.execute(
     '''
     CREATE TABLE data (
-        name text,
+        person text,
         department text,
         faculty text,
         since_date text,
         until_date text,
-        description text,
+        organisation text,
         location text,
-        role_description text
+        function text
     )
     '''
 )
@@ -46,7 +46,7 @@ for letter in alphabet:
     prof_divs = soup.select('main.l-content div#list > div.row > div')
 
     for prof_div in prof_divs:
-        name = prof_div.find('h5').get_text()
+        person = prof_div.find('h5').get_text()
         
         info_div = prof_div.find('div').find('div')
         
@@ -62,10 +62,9 @@ for letter in alphabet:
         table = info_div.find('table')
         if not table:
             continue
-        role_trs = table.find('tbody').find_all('tr')
-        for role_tr in role_trs:
-            role = []
-            tds = role_tr.find_all('td')
+        function_trs = table.find('tbody').find_all('tr')
+        for function_tr in function_trs:
+            tds = function_tr.find_all('td')
             date_str = tds[0].get_text()
 
             since_date = ''
@@ -80,33 +79,33 @@ for letter in alphabet:
                 since_date = since_obj.isoformat()
                 until_date = until_obj.isoformat()
 
-            description = tds[1].get_text()
+            organisation = tds[1].get_text()
             location = tds[2].get_text()
-            role_description = tds[3].get_text()
+            function = tds[3].get_text()
             
             c.execute(
                 '''
                 INSERT INTO data (
-                    name,
+                    person,
                     department,
                     faculty,
                     since_date,
                     until_date,
-                    description,
+                    organisation,
                     location,
-                    role_description
+                    function
                 )
                 VALUES
                 (?,?,?,?,?,?,?,?)
                 ''',
-                [name,
+                [person,
                 department,
                 faculty,
                 since_date,
                 until_date,
-                description,
+                organisation,
                 location,
-                role_description]
+                function]
             )
         conn.commit()
 
