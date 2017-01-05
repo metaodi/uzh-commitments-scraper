@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/metaodi/uzh-commitments-scraper.svg?branch=master)](https://travis-ci.org/metaodi/uzh-commitments-scraper)
+
 Scraper for the significant commitments of interest of professors at the University of Zurich (Interessenbindung)
 =================================================================================================================
 
