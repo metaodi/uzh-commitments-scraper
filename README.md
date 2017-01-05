@@ -6,4 +6,4 @@ With this scraper, the data is even machine readable and can be analyzed further
 
 Maybe in the future the University of Zurich decides to publish the data in a machine readable form, until then this scraper is here to help close this gap.
 
-The scraper runs on morph.io where you can either download the data or access it via an API.
+The scraper runs on [morph.io](https://morph.io/metaodi/uzh-commitments-scraper) where you can either download the data as CSV or SQLite or [access it via the API](https://morph.io/documentation/api?scraper=metaodi%2Fuzh-commitments-scraper).
