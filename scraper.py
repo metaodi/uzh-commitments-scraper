@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup
 import sqlite3
 import dateparser
 
-from pprint import pprint
-
 DATABASE_NAME = 'data.sqlite'
 conn = sqlite3.connect(DATABASE_NAME)
 c = conn.cursor()
@@ -47,12 +45,12 @@ for letter in alphabet:
 
     for prof_div in prof_divs:
         person = prof_div.find('h5').get_text()
-        
+
         info_div = prof_div.find('div').find('div')
-        
+
         info_text = info_div.find('p').get_text()
         faculty = ''
-        department = '' 
+        department = ''
         for line in info_text.splitlines():
             if line.startswith(u'Fakult\xe4tszugeh\xf6rigkeit'):
                 faculty = split_and_strip(line)
@@ -70,19 +68,31 @@ for letter in alphabet:
             since_date = ''
             until_date = ''
             if date_str and date_str.startswith("seit"):
-                since_obj = dateparser.parse(date_str[len("seit "):], languages=['de'], settings={'PREFER_DAY_OF_MONTH': 'first'})
+                since_obj = dateparser.parse(
+                    date_str[len("seit "):],
+                    languages=['de'],
+                    settings={'PREFER_DAY_OF_MONTH': 'first'}
+                )
                 since_date = since_obj.isoformat()
             elif date_str and len(date_str.split(' - ')) == 2:
                 since_str, until_str = date_str.split(' - ')
-                since_obj = dateparser.parse(since_str, languages=['de'], settings={'PREFER_DAY_OF_MONTH': 'first'})
-                until_obj = dateparser.parse(until_str, languages=['de'], settings={'PREFER_DAY_OF_MONTH': 'last'})
+                since_obj = dateparser.parse(
+                    since_str,
+                    languages=['de'],
+                    settings={'PREFER_DAY_OF_MONTH': 'first'}
+                )
+                until_obj = dateparser.parse(
+                    until_str,
+                    languages=['de'],
+                    settings={'PREFER_DAY_OF_MONTH': 'last'}
+                )
                 since_date = since_obj.isoformat()
                 until_date = until_obj.isoformat()
 
             organisation = tds[1].get_text()
             location = tds[2].get_text()
             function = tds[3].get_text()
-            
+
             c.execute(
                 '''
                 INSERT INTO data (
@@ -98,14 +108,16 @@ for letter in alphabet:
                 VALUES
                 (?,?,?,?,?,?,?,?)
                 ''',
-                [person,
-                department,
-                faculty,
-                since_date,
-                until_date,
-                organisation,
-                location,
-                function]
+                [
+                    person,
+                    department,
+                    faculty,
+                    since_date,
+                    until_date,
+                    organisation,
+                    location,
+                    function
+                ]
             )
         conn.commit()
 
